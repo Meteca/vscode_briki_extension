@@ -1,7 +1,7 @@
 {
 	"name": "briki",
 	"displayName": "Briki-test",
-	"description": "First try",
+	"description": "Graphical tool for updading Briki boards",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.40.0"
@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.BrikiOTA"
+		"*"
 	],
 	"main": "./extension.js",
 	"contributes": {
