@@ -1,5 +1,6 @@
 {
-	"name": "briki",
+	"name": "brikiota",
+	"publisher": "briki",
 	"displayName": "Briki-test",
 	"description": "Graphical tool for updading Briki boards",
 	"version": "0.0.1",
