@@ -23,7 +23,7 @@ function activate(context) {
 			//tool_path = path.join(dir_path, "brikiOta.exe")
 		}
 		if(process.platform === "linux"){
-			//tool_path = path.join(dir_path, "brikiOta.exe")
+			tool_path = path.join(dir_path, "brikiOta")
 		}
 
 		fs.chmodSync(tool_path, 0o111);
