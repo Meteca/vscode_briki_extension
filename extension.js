@@ -26,7 +26,7 @@ function activate(context) {
 			tool_path = path.join(dir_path, "brikiOta")
 		}
 
-		fs.chmodSync(tool_path, 0o111);
+		fs.chmodSync(tool_path, 0o555);
 		console.log(process.platform)
 		console.log(tool_path)
 		try{
