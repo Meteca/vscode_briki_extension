@@ -12,7 +12,6 @@ function activate(context) {
 	//function that create the BrikiOTA command
 
 	let disposable = vscode.commands.registerCommand('extension.BrikiOTA', function () {
-		// tool_path = "C:/Users/alber/Desktop/mbc-wb-sw-platform-master/mbc-wb-sw-platform-master/tools/brikiOta/brikiOta.exe";
 		let dir_path = vscode.extensions.getExtension("briki.brikiota").extensionPath;
 		let tool_path;
 
