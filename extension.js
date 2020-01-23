@@ -20,7 +20,7 @@ function activate(context) {
 			tool_path = path.join(dir_path, "brikiOta.exe")
 		}
 		if(process.platform === "darwin"){
-			//tool_path = path.join(dir_path, "brikiOta.exe")
+			tool_path = path.join(dir_path, "brikiOta.app")
 		}
 		if(process.platform === "linux"){
 			tool_path = path.join(dir_path, "brikiOta")
