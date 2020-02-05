@@ -19,7 +19,14 @@
 				"command": "extension.helloWorld",
 				"title": "Hello World"
 			}
-		]
+		],
+		"themes": [
+            {
+                "label": "briki",
+                "uiTheme": "vs-dark",
+                "path": "./themes/briki-color-theme.json"
+            }
+        ]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
