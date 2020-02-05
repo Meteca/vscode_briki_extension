@@ -66,7 +66,8 @@ function activate(context) {
 	//create the button that calls the command
 	brikiOtaButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
 	brikiOtaButton.command = 'extension.BrikiOTA';
-	brikiOtaButton.text = 'B'
+	brikiOtaButton.text = '$(cloud-upload)BrikiOta'
+	//brikiOtaButton.color = 'red'
 	brikiOtaButton.show();
 	context.subscriptions.push(brikiOtaButton);  //making the button available
 
