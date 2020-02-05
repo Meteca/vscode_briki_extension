@@ -1,5 +1,6 @@
 {
 	"name": "briki-extension",
+	"publisher": "meteca",
 	"displayName": "Briki extension",
 	"description": "",
 	"version": "0.0.1",
@@ -10,14 +11,56 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "briki",
+					"title": "Briki",
+					"icon": "images/natale.svg"
+				}
+			]
+		},
+		"views": {
+			"platformio": [
+				{
+					"id": "briki-commands",
+					"name": "Briki",
+					"when": "pioCoreReady"
+				}
+			],
+			"briki": [
+				{
+					"id": "commands",
+					"name": "Commands"
+				},
+				{
+					"id": "prova",
+					"name": "prova"
+				}
+			]
+		},
+		"menus": {
+			"view/item/context": [
+				{
+					"command": "prova.helloWorld"
+				}
+			]
+		},
 		"commands": [
 			{
-				"command": "extension.helloWorld",
+				"command": "prova.helloWorld",
 				"title": "Hello World"
+			}
+		],
+		"themes": [
+			{
+				"label": "briki",
+				"uiTheme": "vs-dark",
+				"path": "./themes/briki-color-theme.json"
 			}
 		]
 	},
@@ -38,5 +81,8 @@
 		"typescript": "^3.6.4",
 		"tslint": "^5.20.0",
 		"vscode-test": "^1.2.2"
-	}
+	},
+	"extensionDependencies": [
+		"platformio.platformio-ide"
+	]
 }
