@@ -16,53 +16,53 @@
 	"main": "./out/extension.js",
 	"contributes": {
 		"viewsContainers": {
-            "activitybar": [
-                {
-                    "id": "briki",
-                    "title": "Briki",
-                    "icon": "images/natale.svg"
-                }
-            ]
+			"activitybar": [
+				{
+					"id": "briki",
+					"title": "Briki",
+					"icon": "images/natale.svg"
+				}
+			]
 		},
 		"views": {
 			"platformio": [
-                {
-                    "id": "briki-commands",
+				{
+					"id": "briki-commands",
 					"name": "Briki",
 					"when": "pioCoreReady"
 				}
 			],
-            "briki": [
-                {
-                    "id": "commands",
-                    "name": "Commands"
+			"briki": [
+				{
+					"id": "commands",
+					"name": "Commands"
 				},
 				{
-                    "id": "prova",
-                    "name": "prova"
-                }
-            ]
+					"id": "prova",
+					"name": "prova"
+				}
+			]
 		},
 		"menus": {
 			"view/item/context": [
-			  {
-				"command": "extension.helloWorld"
-			  }
+				{
+					"command": "prova.helloWorld"
+				}
 			]
 		},
 		"commands": [
 			{
-				"command": "extension.helloWorld",
+				"command": "prova.helloWorld",
 				"title": "Hello World"
 			}
 		],
 		"themes": [
-            {
-                "label": "briki",
-                "uiTheme": "vs-dark",
-                "path": "./themes/briki-color-theme.json"
-            }
-        ]
+			{
+				"label": "briki",
+				"uiTheme": "vs-dark",
+				"path": "./themes/briki-color-theme.json"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -84,5 +84,5 @@
 	},
 	"extensionDependencies": [
 		"platformio.platformio-ide"
-	  ]
+	]
 }
