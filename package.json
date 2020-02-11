@@ -43,17 +43,11 @@
 				}
 			]
 		},
-		"menus": {
-			"view/item/context": [
-				{
-					"command": "extension.helloWorld"
-				}
-			]
-		},
+		
 		"commands": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
+				"command": "extension.brikiOta",
+				"title": "Briki OTA"
 			}
 		],
 		"themes": [
@@ -86,6 +80,10 @@
 		"platformio.platformio-ide"
 	],
 	"dependencies": {
-		"express": "^4.17.1"
+		"@types/ini": "^1.3.30",
+		"express": "^4.17.1",
+		"fs": "0.0.1-security",
+		"ini": "^1.3.5",
+		"path": "^0.12.7"
 	}
 }
