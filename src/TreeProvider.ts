@@ -1,17 +1,10 @@
 import * as vscode from 'vscode';
+import {Cmd} from './Cmd';
 
-export class Command {
-	label: string;
-	commandName: string;
-	constructor(label: string, command: string){
-		this.label = label;
-		this.commandName = command;
-	}
-}
 
 export class TreeProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
-	commands : Command [];
-	constructor(commands : Command[]){
+	commands : Cmd [];
+	constructor(commands : Cmd[]){
 		this.commands = commands;
 	}
 
@@ -21,12 +14,8 @@ export class TreeProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
 		}
 		var items : vscode.TreeItem[] = [];
 		this.commands.forEach(command => {
-            var item = new vscode.TreeItem(command.label);
-            item.command = {
-                title: command.label,
-                command: command.commandName,
-                arguments: []
-            };
+            var item = new vscode.TreeItem(command.title);
+            item.command = command;
 			items.push(item);
 		});
 
