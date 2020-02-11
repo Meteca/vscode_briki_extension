@@ -1,20 +1,19 @@
 import * as vscode from 'vscode';
 import {Command, TreeProvider} from './TreeProvider';
+import {brikiOta} from './brikiOta';
 
 export function activate(context: vscode.ExtensionContext) {
 
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
-		vscode.window.showInformationMessage('Hello World!');
-	});
+	let otaDisposable = vscode.commands.registerCommand('extension.brikiOta', brikiOta);
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(otaDisposable);
 	context.subscriptions.push(
 		vscode.window.registerTreeDataProvider(
 			'briki-commands',
 			new TreeProvider([
 				{
-					label: 'HelloWorld',
-					commandName: 'extension.helloWorld' 
+					label: 'Briki OTA',
+					commandName: 'extension.brikiOta' 
 				}
 			])
 		)
