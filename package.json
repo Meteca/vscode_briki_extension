@@ -46,13 +46,13 @@
 		"menus": {
 			"view/item/context": [
 				{
-					"command": "prova.helloWorld"
+					"command": "extension.helloWorld"
 				}
 			]
 		},
 		"commands": [
 			{
-				"command": "prova.helloWorld",
+				"command": "extension.helloWorld",
 				"title": "Hello World"
 			}
 		],
@@ -84,5 +84,8 @@
 	},
 	"extensionDependencies": [
 		"platformio.platformio-ide"
-	]
+	],
+	"dependencies": {
+		"express": "^4.17.1"
+	}
 }
