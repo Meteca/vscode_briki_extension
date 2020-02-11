@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import {Command, TreeProvider} from './TreeProvider';
+import {TreeProvider} from './TreeProvider';
+import {Cmd} from './Cmd';
 import {brikiOta} from './brikiOta';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -11,15 +12,11 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.registerTreeDataProvider(
 			'briki-commands',
 			new TreeProvider([
-				{
-					label: 'Briki OTA',
-					commandName: 'extension.brikiOta' 
-				}
+				new Cmd('Briki OTA', 'extension.brikiOta')
 			])
 		)
 	);
 		
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
