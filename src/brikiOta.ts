@@ -6,7 +6,7 @@ import * as ini from 'ini';
 
 
 export function brikiOta(){
-    let dir_path : string = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath || ".";
+    const dir_path : string = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath || ".";
     let tool_path : string;
     var folders = vscode.workspace.workspaceFolders || [];
     var ini_file : any;
@@ -17,7 +17,7 @@ export function brikiOta(){
         tool_path = path.join(dir_path, "brikiOta", "brikiOta.exe");
     }
     if(process.platform === "darwin"){
-        tool_path = path.join(dir_path, "brikiOta", "brikiOta.app");
+        tool_path = path.join(dir_path, "brikiOta", "brikiOta.app", "Contents", "MacOS", "brikiOta");
     }
     else{
         tool_path = path.join(dir_path, "brikiOta", "brikiOta");
@@ -38,12 +38,12 @@ export function brikiOta(){
         for (var i = folders.length - 1; i >= 0; i--){
             ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
             ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
-            if (Object.keys(ini_file)[0].includes("briki") && Object.keys(ini_file)[0].includes("esp32")){
+            if (Object.keys(ini_file)[0].includes("briki") && Object.keys(ini_file)[0].includes("esp32")){ // recognize if this is a briki-esp32 project
                 args.push("ESP32");
                 args.push(path.join(folders[i].uri.fsPath, ".pio", "build", Object.keys(ini_file)[0].slice(4), "firmware.bin"));
                 break;
             }
-            if (Object.keys(ini_file)[0].includes("briki") && Object.keys(ini_file)[0].includes("samd21")){
+            if (Object.keys(ini_file)[0].includes("briki") && Object.keys(ini_file)[0].includes("samd21")){ //recognize if this is a briki-samd21 project
                 args.push("SAMD21");
                 args.push(path.join(folders[i].uri.fsPath, ".pio", "build", Object.keys(ini_file)[0].slice(4), "firmware.bin"));
                 break;
