@@ -1,0 +1,15 @@
+digraph "mbc-wb" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_6aa90f7f71e3cf5d2afdea9f35a5777d {
+    graph [ bgcolor="#ddddee", pencolor="black", label="Meteca" fontname="Helvetica", fontsize="10", URL="dir_6aa90f7f71e3cf5d2afdea9f35a5777d.html"]
+  subgraph clusterdir_3a5806dae95b45d5be62b597677498ea {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_3a5806dae95b45d5be62b597677498ea.html"];
+    dir_3a5806dae95b45d5be62b597677498ea [shape=plaintext label="mbc-wb"];
+    dir_3ed91808d3d3e04a83d382eaf6658e79 [shape=box label="cores" color="red" fillcolor="white" style="filled" URL="dir_3ed91808d3d3e04a83d382eaf6658e79.html"];
+    dir_7587beba4653cd29a136cf350c74429d [shape=box label="libraries" color="red" fillcolor="white" style="filled" URL="dir_7587beba4653cd29a136cf350c74429d.html"];
+  }
+  }
+  dir_7587beba4653cd29a136cf350c74429d->dir_3ed91808d3d3e04a83d382eaf6658e79 [headlabel="4", labeldistance=1.5 headhref="dir_000005_000009.html"];
+}

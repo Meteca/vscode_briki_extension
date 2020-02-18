@@ -1,0 +1,13 @@
+digraph "Meteca" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_2acb69ac8df26e9e75c66ce3f541f255 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="hardware" fontname="Helvetica", fontsize="10", URL="dir_2acb69ac8df26e9e75c66ce3f541f255.html"]
+  subgraph clusterdir_6aa90f7f71e3cf5d2afdea9f35a5777d {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_6aa90f7f71e3cf5d2afdea9f35a5777d.html"];
+    dir_6aa90f7f71e3cf5d2afdea9f35a5777d [shape=plaintext label="Meteca"];
+    dir_3a5806dae95b45d5be62b597677498ea [shape=box label="mbc-wb" color="red" fillcolor="white" style="filled" URL="dir_3a5806dae95b45d5be62b597677498ea.html"];
+  }
+  }
+}
