@@ -1,0 +1,18 @@
+digraph "WiFi2Control" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_7587beba4653cd29a136cf350c74429d {
+    graph [ bgcolor="#ddddee", pencolor="black", label="libraries" fontname="Helvetica", fontsize="10", URL="dir_7587beba4653cd29a136cf350c74429d.html"]
+  subgraph clusterdir_7faea6a4e129f28792585560ccfba1d4 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_7faea6a4e129f28792585560ccfba1d4.html"];
+    dir_7faea6a4e129f28792585560ccfba1d4 [shape=plaintext label="WiFi2Control"];
+    dir_0bcfb2d6c9cdcf7a7d7e0ad8d2f2d2d6 [shape=box label="src" color="black" fillcolor="white" style="filled" URL="dir_0bcfb2d6c9cdcf7a7d7e0ad8d2f2d2d6.html"];
+  }
+  }
+  dir_3ed91808d3d3e04a83d382eaf6658e79 [shape=box label="cores" fillcolor="white" style="filled" color="red" URL="dir_3ed91808d3d3e04a83d382eaf6658e79.html"];
+  dir_94dbaaa01efad51604e74eb5a1b42ff6 [shape=box label="Control2WiFi" fillcolor="white" style="filled" color="red" URL="dir_94dbaaa01efad51604e74eb5a1b42ff6.html"];
+  dir_0bcfb2d6c9cdcf7a7d7e0ad8d2f2d2d6->dir_3ed91808d3d3e04a83d382eaf6658e79 [headlabel="1", labeldistance=1.5 headhref="dir_000012_000009.html"];
+  dir_0bcfb2d6c9cdcf7a7d7e0ad8d2f2d2d6->dir_94dbaaa01efad51604e74eb5a1b42ff6 [headlabel="1", labeldistance=1.5 headhref="dir_000012_000006.html"];
+  dir_94dbaaa01efad51604e74eb5a1b42ff6->dir_3ed91808d3d3e04a83d382eaf6658e79 [headlabel="3", labeldistance=1.5 headhref="dir_000006_000009.html"];
+}
