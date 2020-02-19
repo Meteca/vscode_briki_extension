@@ -14,6 +14,16 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(docDisposable);
 	context.subscriptions.push(
 		vscode.window.registerTreeDataProvider(
+			'commands',
+			new TreeProvider([
+				new Cmd('Briki OTA', 'briki.brikiOta'),
+				new Cmd('Partition', 'briki.partition'),
+				new Cmd('Documentation', 'briki.documentation')
+			])
+		)
+	);
+	context.subscriptions.push(
+		vscode.window.registerTreeDataProvider(
 			'briki-commands',
 			new TreeProvider([
 				new Cmd('Briki OTA', 'briki.brikiOta'),
