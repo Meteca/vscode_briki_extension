@@ -20,7 +20,7 @@
 				{
 					"id": "briki",
 					"title": "Briki",
-					"icon": "images/natale.svg"
+					"icon": "images/Icon_briki_.svg"
 				}
 			]
 		},
@@ -36,10 +36,6 @@
 				{
 					"id": "commands",
 					"name": "Commands"
-				},
-				{
-					"id": "prova",
-					"name": "prova"
 				}
 			]
 		},
