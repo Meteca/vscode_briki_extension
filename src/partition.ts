@@ -2,20 +2,19 @@ import * as vscode from 'vscode';
 import * as ini from 'ini';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as csv from 'csv-parser';
+import * as csv from 'csvtojson';
+import CSVError from 'csvtojson/v2/CSVError';
 
 const pick = vscode.window.showQuickPick;
 
 
-interface Params {
+interface GUIParams {
     fsChoice: string;
     dataPath: string; 
     uploadChoice: string;
 }
 
-
-
-async function findDataPath(): Promise<string | undefined>{
+async function getDataPath(): Promise<string | undefined>{
     var folders = vscode.workspace.workspaceFolders || [];
     var ini_file : any;
     var ini_file_path : string;
@@ -54,28 +53,33 @@ function getCSVPath(): string | undefined{
             }
         });
     }
-    return path.join(homedir, ".platformio", "packages", "framework-arduino-briki", "tools", "partitions", "default_8MB.csv");
+    return path.join(homedir, ".platformio", "packages", "framework-arduino-briki", "tools", "partitions", "8MB_ffat.csv");
 }
 
 
 //da testare
-async function getPartitionDim(): Promise <number | undefined>{
-    var results: any[];
-    fs.createReadStream(<fs.PathLike> getCSVPath())
-        .pipe(csv())
-        .on('data', (data) => results.push(data))
-        .on('end', () => {
-            results.forEach( (row) =>{
-                if(row.Name === 'ffat' || row.Name === 'spiff'){
-                    return row.Size;
-                }
-            });
+async function getPartitionDim(): Promise <string | undefined>{
+    let size: string | undefined = undefined;
+    var path = getCSVPath(); 
+    if(path !== undefined){
+        let jsonArray = await csv().fromStream(
+            fs.createReadStream(<fs.PathLike> getCSVPath(), {
+                encoding: 'utf8',
+                start: 2,
+            })
+        );
+        console.log(jsonArray);
+        jsonArray.forEach( (row) =>{
+            if(row.Name === 'ffat' || row.Name ==='spiffs'){
+                size = row.Size;
+            }
         });
-    return undefined;
+    }
+    return size;
 }
 
 
-async function getParamFromGUI(): Promise<Params | undefined>{
+async function getParamFromGUI(): Promise<GUIParams | undefined>{
     const fsOptions = ['Fat', 'Spiff'];
     const loadOptions = ['Load default', 'Load empty', 'Cancel'];
     const uploadOptions = ['Usb', 'Ota', 'Just create'];
@@ -90,9 +94,9 @@ async function getParamFromGUI(): Promise<Params | undefined>{
     }
 
 
-    let dataPath = await findDataPath();
+    let dataPath = await getDataPath();
 
-    if(dataPath === undefined){  //data alredy do not exist
+    if(!fs.existsSync(<fs.PathLike> dataPath)){  //data alredy do not exist
         var loadChoice = await pick(  //choose load option
             loadOptions, 
             {placeHolder: "Data not found"} as vscode.QuickPickOptions
@@ -129,16 +133,25 @@ async function getParamFromGUI(): Promise<Params | undefined>{
     return {
         fsChoice: fsChoice, 
         dataPath: dataPath, 
-        uploadChoice: uploadChoice} as Params;
+        uploadChoice: uploadChoice} as GUIParams;
 }
 
 
 
 //scrivere i comandi
 export async function partition(){
+    const output_file: string = "output_file"; //da implementare
+    var executable: string;
     let [params, partitionDim] = await Promise.all([getParamFromGUI(), getPartitionDim()]);
     if(params === undefined || partitionDim === undefined){
         return;
-    } 
-    
+    }
+    if(params.fsChoice === 'Fat'){
+        executable = "ffat_path"; //da implementare
+    }
+    else{
+        executable = "spiff_path"; // da implementare
+    }
+
+    console.log(`${executable} ${output_file} ${partitionDim} ${params.dataPath}`);
 }
