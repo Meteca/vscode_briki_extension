@@ -3,7 +3,6 @@ import * as ini from 'ini';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as csv from 'csvtojson';
-import CSVError from 'csvtojson/v2/CSVError';
 
 const pick = vscode.window.showQuickPick;
 
@@ -24,7 +23,7 @@ async function getDataPath(): Promise<string | undefined>{
         ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
         ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
         key = Object.keys(ini_file)[0];
-        if (key.includes("briki") && key.includes("esp32")){ // recognize if this is a briki-esp32 project
+        if (ini_file[Object.keys(ini_file)[0]].board.includes("briki") && ini_file[Object.keys(ini_file)[0]].board.includes("esp")){ // recognize if this is a briki-esp32 project
             return ini_file[key].data_dir ??  path.join(folders[i].uri.fsPath, "data"); //return user selected data folder if exist or default one            
         }
     }
@@ -32,7 +31,7 @@ async function getDataPath(): Promise<string | undefined>{
 }
 
 
-//da testare
+//aggiornare path con quello definitivo
 function getCSVPath(): string | undefined{
     const homedir = require('os').homedir();
     var folders = vscode.workspace.workspaceFolders || [];
@@ -57,7 +56,6 @@ function getCSVPath(): string | undefined{
 }
 
 
-//da testare
 async function getPartitionDim(): Promise <string | undefined>{
     let size: string | undefined = undefined;
     var path = getCSVPath(); 
@@ -80,7 +78,7 @@ async function getPartitionDim(): Promise <string | undefined>{
 
 
 async function getParamFromGUI(): Promise<GUIParams | undefined>{
-    const fsOptions = ['Fat', 'Spiff'];
+    const fsOptions = ['Ffat', 'Spiff'];
     const loadOptions = ['Load default', 'Load empty', 'Cancel'];
     const uploadOptions = ['Usb', 'Ota', 'Just create'];
     
@@ -136,22 +134,48 @@ async function getParamFromGUI(): Promise<GUIParams | undefined>{
         uploadChoice: uploadChoice} as GUIParams;
 }
 
+async function getOutputPath(): Promise<string | undefined> {
+    var folders = vscode.workspace.workspaceFolders || [];
+    var ini_file : any;
+    var ini_file_path : string;
 
+    for (var i = folders.length - 1; i >= 0; i--){
+        ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
+        ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
+        if (ini_file[Object.keys(ini_file)[0]].board.includes("briki") && ini_file[Object.keys(ini_file)[0]].board.includes("esp")){ // recognize if this is a briki-esp32 project
+            return path.join(folders[i].uri.fsPath, ".pio", "build", Object.keys(ini_file)[0].slice(4), "briki_data.bin");
+        }
+    }
+    return undefined;
+}
 
-//scrivere i comandi
+//scrivere i comandi e upload
 export async function partition(){
-    const output_file: string = "output_file"; //da implementare
-    var executable: string;
-    let [params, partitionDim] = await Promise.all([getParamFromGUI(), getPartitionDim()]);
-    if(params === undefined || partitionDim === undefined){
+    const dir_path : string = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath || ".";
+    var executable = path.join(dir_path, "partition");
+    
+    let [params, partitionDim, outputFile] = await Promise.all([getParamFromGUI(), getPartitionDim(), getOutputPath()]);
+    if(params === undefined || partitionDim === undefined || outputFile === undefined){
         return;
     }
-    if(params.fsChoice === 'Fat'){
-        executable = "ffat_path"; //da implementare
+
+
+    //da implementare i vari if statement
+    if(params.fsChoice === 'Ffat' && process.platform === "darwin"){
+        executable = path.join(executable, "fatfsimage"); //da implementare
     }
     else{
         executable = "spiff_path"; // da implementare
     }
 
-    console.log(`${executable} ${output_file} ${partitionDim} ${params.dataPath}`);
+
+    //launch command
+    console.log(`${executable} ${outputFile} ${partitionDim} ${params.dataPath}`);
+    //vscode.window.createTerminal("partition", executable, [output_file, partitionDim, params.dataPath]);
+
+    //upload
+
+
+
+
 }
