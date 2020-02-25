@@ -38,12 +38,13 @@ export function brikiOta(){
         for (var i = folders.length - 1; i >= 0; i--){
             ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
             ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
-            if (Object.keys(ini_file)[0].includes("briki") && Object.keys(ini_file)[0].includes("esp32")){ // recognize if this is a briki-esp32 project
+            console.log(ini_file);
+            if (ini_file[Object.keys(ini_file)[0]].board.includes("briki") && ini_file[Object.keys(ini_file)[0]].board.includes("esp")){ // recognize if this is a briki-esp32 project
                 args.push("ESP32");
                 args.push(path.join(folders[i].uri.fsPath, ".pio", "build", Object.keys(ini_file)[0].slice(4), "firmware.bin"));
                 break;
             }
-            if (Object.keys(ini_file)[0].includes("briki") && Object.keys(ini_file)[0].includes("samd21")){ //recognize if this is a briki-samd21 project
+            if (ini_file[Object.keys(ini_file)[0]].board.includes("briki") && ini_file[Object.keys(ini_file)[0]].board.includes("samd")){ //recognize if this is a briki-samd21 project
                 args.push("SAMD21");
                 args.push(path.join(folders[i].uri.fsPath, ".pio", "build", Object.keys(ini_file)[0].slice(4), "firmware.bin"));
                 break;
