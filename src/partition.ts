@@ -4,7 +4,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as csv from 'csvtojson';
 
-const pick = vscode.window.showQuickPick;
 
 
 interface GUIParams {
@@ -78,6 +77,8 @@ async function getPartitionDim(): Promise <string | undefined>{
 
 
 async function getParamFromGUI(): Promise<GUIParams | undefined>{
+
+    const pick = vscode.window.showQuickPick;
     const fsOptions = ['Ffat', 'Spiff'];
     const loadOptions = ['Load default', 'Load empty', 'Cancel'];
     const uploadOptions = ['Usb', 'Ota', 'Just create'];
@@ -149,33 +150,63 @@ async function getOutputPath(): Promise<string | undefined> {
     return undefined;
 }
 
-//scrivere i comandi e upload
-export async function partition(){
+
+//da testare
+function getExecutablePath(params: GUIParams):  string | undefined {
     const dir_path : string = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath || ".";
     var executable = path.join(dir_path, "partition");
+
+    if(params.fsChoice === 'Ffat' && process.platform === "darwin"){
+        executable = path.join(executable, "fatfsimage");
+    }
+    else if(params.fsChoice === 'Ffat' && process.platform === "win32"){
+        executable = path.join(executable, "fatfsimage.exe"); 
+    }
+    else if(params.fsChoice === 'Ffat' && process.platform === "linux"){
+        executable = path.join(executable, "fatfsimage.elf"); 
+    }
+    if(params.fsChoice === 'Spiff' && process.platform === "darwin"){
+        executable = path.join(executable, "mkspiff"); 
+    }
+    if(params.fsChoice === 'Spiff' && process.platform === "win32"){
+        executable = path.join(executable, "mkspiff.exe");
+    }
+    if(params.fsChoice === 'Spiff' && process.platform === "linux"){
+        executable = path.join(executable, "mkspiff.elf");
+    }
+    else{
+        return undefined;
+    }
+
+
+    try{
+        fs.chmodSync(executable, 0o555);
+        return executable;
+    }
+    catch{
+        vscode.window.showInformationMessage('Error with ota binary');
+        return undefined;
+    }
+    
+
+}
+
+//scrivere i comandi e upload
+export async function partition(){
+    
     
     let [params, partitionDim, outputFile] = await Promise.all([getParamFromGUI(), getPartitionDim(), getOutputPath()]);
     if(params === undefined || partitionDim === undefined || outputFile === undefined){
         return;
     }
 
-
-    //da implementare i vari if statement
-    if(params.fsChoice === 'Ffat' && process.platform === "darwin"){
-        executable = path.join(executable, "fatfsimage"); //da implementare
-    }
-    else{
-        executable = "spiff_path"; // da implementare
-    }
-
+    var executable = getExecutablePath(params);
 
     //launch command
     console.log(`${executable} ${outputFile} ${partitionDim} ${params.dataPath}`);
     //vscode.window.createTerminal("partition", executable, [output_file, partitionDim, params.dataPath]);
 
     //upload
-
-
 
 
 }
