@@ -3,7 +3,9 @@ import * as ini from 'ini';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as csv from 'csvtojson';
+import {getOtaPath} from './brikiOta';
 
+const homedir = require('os').homedir();
 
 
 interface GUIParams {
@@ -29,10 +31,8 @@ async function getDataPath(): Promise<string | undefined>{
     return undefined;
 }
 
-
 //aggiornare path con quello definitivo
 function getCSVPath(): string | undefined{
-    const homedir = require('os').homedir();
     var folders = vscode.workspace.workspaceFolders || [];
     var ini_file : any;
     var ini_file_path : string;
@@ -54,7 +54,6 @@ function getCSVPath(): string | undefined{
     return path.join(homedir, ".platformio", "packages", "framework-arduino-briki", "tools", "partitions", "8MB_ffat.csv");
 }
 
-
 async function getPartitionDim(): Promise <string | undefined>{
     let size: string | undefined = undefined;
     var path = getCSVPath(); 
@@ -65,7 +64,6 @@ async function getPartitionDim(): Promise <string | undefined>{
                 start: 2,
             })
         );
-        console.log(jsonArray);
         jsonArray.forEach( (row) =>{
             if(row.Name === 'ffat' || row.Name ==='spiffs'){
                 size = row.Size;
@@ -75,13 +73,21 @@ async function getPartitionDim(): Promise <string | undefined>{
     return size;
 }
 
-
 async function getParamFromGUI(): Promise<GUIParams | undefined>{
+
 
     const pick = vscode.window.showQuickPick;
     const fsOptions = ['Ffat', 'Spiff'];
     const loadOptions = ['Load default', 'Load empty', 'Cancel'];
     const uploadOptions = ['Usb', 'Ota', 'Just create'];
+
+
+    let dataPath = await getDataPath();
+
+    if(dataPath === undefined){
+        vscode.window.showInformationMessage('Unable to find briki project');
+        return undefined;
+    }
     
     var fsChoice = await pick(  //choose filesystem window
         fsOptions, 
@@ -92,8 +98,6 @@ async function getParamFromGUI(): Promise<GUIParams | undefined>{
         return undefined;
     }
 
-
-    let dataPath = await getDataPath();
 
     if(!fs.existsSync(<fs.PathLike> dataPath)){  //data alredy do not exist
         var loadChoice = await pick(  //choose load option
@@ -107,17 +111,15 @@ async function getParamFromGUI(): Promise<GUIParams | undefined>{
                 vscode.window.showInformationMessage('You canceled the operation');
                 return undefined;
             case 'Load default':
-                // da implementare
+                dataPath = path.join(homedir, ".platformio", "packages", "framework-arduino-briki", "data");
                 break;
-            case 'Load empty':
-                //da implementare
+            case 'Load empty': 
+                fs.mkdirSync(dataPath);
                 break;
             default:
                 vscode.window.showInformationMessage('An error has occured');
                 return undefined;
-        }
-
-        
+        }    
     }
     
     var uploadChoice = await pick(  //choose upload method
@@ -165,13 +167,13 @@ function getExecutablePath(params: GUIParams):  string | undefined {
     else if(params.fsChoice === 'Ffat' && process.platform === "linux"){
         executable = path.join(executable, "fatfsimage.elf"); 
     }
-    if(params.fsChoice === 'Spiff' && process.platform === "darwin"){
+    else if(params.fsChoice === 'Spiff' && process.platform === "darwin"){
         executable = path.join(executable, "mkspiff"); 
     }
-    if(params.fsChoice === 'Spiff' && process.platform === "win32"){
+    else if(params.fsChoice === 'Spiff' && process.platform === "win32"){
         executable = path.join(executable, "mkspiff.exe");
     }
-    if(params.fsChoice === 'Spiff' && process.platform === "linux"){
+    else if(params.fsChoice === 'Spiff' && process.platform === "linux"){
         executable = path.join(executable, "mkspiff.elf");
     }
     else{
@@ -191,22 +193,53 @@ function getExecutablePath(params: GUIParams):  string | undefined {
 
 }
 
-//scrivere i comandi e upload
-export async function partition(){
-    
-    
+
+function getMbcToolPath(): string | undefined {
+    return path.join(homedir, ".platformio", "package", "tool-mbctool", "bin", "mbctool");
+}
+
+
+
+
+//upload
+export async function partition(){  
     let [params, partitionDim, outputFile] = await Promise.all([getParamFromGUI(), getPartitionDim(), getOutputPath()]);
     if(params === undefined || partitionDim === undefined || outputFile === undefined){
         return;
     }
 
     var executable = getExecutablePath(params);
+    if(executable === undefined){
+        vscode.window.showInformationMessage("Executable not found");
+        return;
+    }
 
     //launch command
     console.log(`${executable} ${outputFile} ${partitionDim} ${params.dataPath}`);
-    //vscode.window.createTerminal("partition", executable, [output_file, partitionDim, params.dataPath]);
+    vscode.window.createTerminal("partition", executable, [outputFile, partitionDim, params.dataPath]);
 
     //upload
 
+    if(params.uploadChoice === 'Ota'){
+        var otaPath = getOtaPath();
+        if(otaPath === undefined){
+            vscode.window.showInformationMessage('Ota tool was not properly finded');
+            return undefined;
+        }
+        vscode.window.createTerminal("brikiOta", otaPath, ["ESP32", outputFile]);
+    }
+
+    else if(params.uploadChoice === 'Usb'){
+        var mbctool = getMbcToolPath();
+        if(mbctool === undefined){
+            vscode.window.showInformationMessage("Mbctool not founded");
+            return undefined;
+        }
+        //vscode.window.createTerminal("mbctool", mbctool, []);
+    }
+
+    else{
+        vscode.window.showInformationMessage('Data binary created');
+    }
 
 }
