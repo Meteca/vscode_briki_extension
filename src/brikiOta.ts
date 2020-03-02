@@ -4,15 +4,9 @@ import * as fs from 'fs';
 import * as ini from 'ini';
 
 
-
-export function brikiOta(){
+export function getOtaPath(): string | undefined{
     const dir_path : string = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath || ".";
     let tool_path : string;
-    var folders = vscode.workspace.workspaceFolders || [];
-    var ini_file : any;
-    var ini_file_path : string;
-    var args : string[] = [];
-
     if(process.platform === "win32"){
         tool_path = path.join(dir_path, "brikiOta", "brikiOta.exe");
     }
@@ -24,14 +18,24 @@ export function brikiOta(){
     }
     try{
         fs.chmodSync(tool_path, 0o555);
+        return tool_path;
     }
     catch{
         vscode.window.showInformationMessage('Error with ota binary');
-        return;
+        return undefined;
     }
 
-    console.log(process.platform);
-    console.log(tool_path);
+}
+
+
+
+export function brikiOta(){
+    var folders = vscode.workspace.workspaceFolders || [];
+    var ini_file : any;
+    var ini_file_path : string;
+    var args : string[] = [];
+
+    var tool_path = getOtaPath();
 
     try{
         console.log(folders.length);
