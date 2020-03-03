@@ -6,7 +6,7 @@ import * as csv from 'csvtojson';
 import {getOtaPath} from './brikiOta';
 
 const homedir = require('os').homedir();
-
+const { exec } = require('child_process');
 
 interface GUIParams {
     fsChoice: string;
@@ -200,6 +200,34 @@ function getMbcToolPath(): string | undefined {
 
 
 
+async function getUploadPort(): Promise<string | undefined>{
+    try{
+        let brikiPort : string | undefined = await new Promise((res, rej) => {
+            exec('pio device list --json-output --serial', (err: string, stdout: string, stderr: string) => {
+                if (err) {
+                    rej(err);
+                } else {
+                    console.log(stdout);
+                    let jsonObj = JSON.parse(stdout);
+                    console.log(jsonObj);
+                    jsonObj.forEach( (portObj: any) => {
+                        console.log("hardware id" + portObj.hwid);
+                        if(portObj.hwid.includes("VID:PID=3112:0001") || portObj.hwid.includes("VID:PID=3112:0002")){
+                            return res(portObj.port);
+                        }
+                    });
+                    rej(err);
+                    console.log(`stderr: ${stderr}`);
+                }
+            });
+        });
+        return brikiPort;
+    }
+    catch{
+        vscode.window.showInformationMessage("An error has occurred");
+        return undefined;
+    }
+}
 
 //upload
 export async function partition(){  
@@ -216,7 +244,7 @@ export async function partition(){
 
     //launch command
     console.log(`${executable} ${outputFile} ${partitionDim} ${params.dataPath}`);
-    vscode.window.createTerminal("partition", executable, [outputFile, partitionDim, params.dataPath]);
+    //vscode.window.createTerminal("partition", executable, [outputFile, partitionDim, params.dataPath]);
 
     //upload
 
@@ -235,7 +263,15 @@ export async function partition(){
             vscode.window.showInformationMessage("Mbctool not founded");
             return undefined;
         }
-        //vscode.window.createTerminal("mbctool", mbctool, []);
+
+        var uploadPort = await getUploadPort();
+        console.log(uploadPort);
+        if(uploadPort === undefined){
+            vscode.window.showInformationMessage("Briki board not founded");
+            return undefined;
+        }
+        
+        //vscode.window.createTerminal("mbctool", mbctool, ["--device", "esp", "--speed", "1500000", "--port", uploadPort, "--upload", partitionDim, outputFile]);
     }
 
     else{
