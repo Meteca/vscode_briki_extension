@@ -10,7 +10,7 @@ export function getOtaPath(): string | undefined{
     if(process.platform === "win32"){
         tool_path = path.join(dir_path, "brikiOta", "brikiOta.exe");
     }
-    if(process.platform === "darwin"){
+    else if(process.platform === "darwin"){
         tool_path = path.join(dir_path, "brikiOta", "brikiOta.app", "Contents", "MacOS", "brikiOta");
     }
     else{
@@ -36,6 +36,8 @@ export function brikiOta(){
     var args : string[] = [];
 
     var tool_path = getOtaPath();
+    console.log(process.platform);
+    console.log(tool_path);
 
     try{
         console.log(folders.length);
