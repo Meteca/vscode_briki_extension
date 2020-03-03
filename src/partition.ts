@@ -47,11 +47,11 @@ function getCSVPath(): string | undefined{
                 return path.join(folders[i].uri.fsPath, ini_file[key].board_build.partition);
             }
             if (key.includes('custom_builtin_table')){
-                return path.join(homedir, ".platformio", "packages", "framework-arduino-briki", "tools", "partitions", ini_file[key].board_build.partition);
+                return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", ini_file[key].board_build.partition);
             }
         });
     }
-    return path.join(homedir, ".platformio", "packages", "framework-arduino-briki", "tools", "partitions", "8MB_ffat.csv");
+    return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
 }
 
 async function getPartitionDim(): Promise <string | undefined>{
@@ -111,7 +111,7 @@ async function getParamFromGUI(): Promise<GUIParams | undefined>{
                 vscode.window.showInformationMessage('You canceled the operation');
                 return undefined;
             case 'Load default':
-                dataPath = path.join(homedir, ".platformio", "packages", "framework-arduino-briki", "data");
+                dataPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "data");
                 break;
             case 'Load empty': 
                 fs.mkdirSync(dataPath);
