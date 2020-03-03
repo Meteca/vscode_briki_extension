@@ -186,7 +186,7 @@ function getExecutablePath(params: GUIParams):  string | undefined {
         return executable;
     }
     catch{
-        vscode.window.showInformationMessage('Error with ota binary');
+        vscode.window.showInformationMessage('Error with partition binary');
         return undefined;
     }
     
