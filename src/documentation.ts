@@ -20,12 +20,12 @@ export function documentation(context: vscode.ExtensionContext){
     
 
     if (process.platform === 'win32'){
-        vscode.window.createTerminal("documentation","rundll32 url.dll,FileProtocolHandler ", [indexPath]);
+        vscode.window.createTerminal("documentation", "rundll32.exe", ["url.dll,FileProtocolHandler", indexPath]);
     }
-    if (process.platform === 'darwin'){
+    else if (process.platform === 'darwin'){
         vscode.window.createTerminal("documentation", "open", [indexPath]);
         }
-    if (process.platform === 'linux'){
+    else if (process.platform === 'linux'){
         vscode.window.createTerminal("documentation", "~/.platformio/penv/bin/python", ["-m webbrowser " + "file://" + indexPath]);
     }
 }
