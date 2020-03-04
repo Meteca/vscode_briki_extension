@@ -117,7 +117,7 @@ async function getParamFromGUI(): Promise<GUIParams | undefined>{
                 fs.mkdirSync(dataPath);
                 break;
             default:
-                vscode.window.showInformationMessage('An error has occured');
+                vscode.window.showErrorMessage('An error has occured');
                 return undefined;
         }    
     }
@@ -186,7 +186,7 @@ function getExecutablePath(params: GUIParams):  string | undefined {
         return executable;
     }
     catch{
-        vscode.window.showInformationMessage('Error with partition binary');
+        vscode.window.showErrorMessage('Error with partition binary');
         return undefined;
     }
     
@@ -230,7 +230,7 @@ async function getUploadPort(): Promise<string | undefined>{
         return brikiPort;
     }
     catch{
-        vscode.window.showInformationMessage("An error has occurred");
+        vscode.window.showErrorMessage("An error has occurred");
         return undefined;
     }
 }
@@ -244,7 +244,7 @@ export async function partition(){
 
     var executable = getExecutablePath(params);
     if(executable === undefined){
-        vscode.window.showInformationMessage("Executable not found");
+        vscode.window.showErrorMessage("Executable not found");
         return;
     }
 
@@ -257,7 +257,7 @@ export async function partition(){
     if(params.uploadChoice === 'Ota'){
         var otaPath = getOtaPath();
         if(otaPath === undefined){
-            vscode.window.showInformationMessage('Ota tool was not properly finded');
+            vscode.window.showErrorMessage('Ota tool was not properly finded');
             return undefined;
         }
         vscode.window.createTerminal("brikiOta", otaPath, ["ESP32", outputFile]);
@@ -266,14 +266,14 @@ export async function partition(){
     else if(params.uploadChoice === 'Usb'){
         var mbctool = getMbcToolPath();
         if(mbctool === undefined){
-            vscode.window.showInformationMessage("Mbctool not founded");
+            vscode.window.showErrorMessage("Mbctool not founded");
             return undefined;
         }
 
         var uploadPort = await getUploadPort();
         console.log(uploadPort);
         if(uploadPort === undefined){
-            vscode.window.showInformationMessage("Briki board not founded");
+            vscode.window.showErrorMessage("Briki board not founded");
             return undefined;
         }
         
