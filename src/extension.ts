@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import {TreeProvider} from './TreeProvider';
-import {Cmd} from './Cmd';
+import {TreeProvider} from './TreeImplementation/TreeProvider';
+import {Cmd} from './TreeImplementation/Cmd';
 import {brikiOta} from './brikiOta';
 import {partition} from './partition';
 import {documentation} from './documentation';
