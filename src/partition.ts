@@ -195,7 +195,13 @@ function getExecutablePath(params: GUIParams):  string | undefined {
 
 
 function getMbcToolPath(): string | undefined {
-    return path.join(homedir, ".platformio", "package", "tool-mbctool", "bin", "mbctool");
+    var toolPath: string | undefined = undefined;
+    if (process.platform === "win32"){
+        return path.join(homedir, ".platformio", "packages", "tool-mbctool", "bin", "mbctool.exe");  
+}
+    else{
+        return path.join(homedir, ".platformio", "packages", "tool-mbctool", "bin", "mbctool");
+    }
 }
 
 
