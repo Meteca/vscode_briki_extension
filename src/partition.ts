@@ -281,7 +281,7 @@ export async function partition(){
     }
 
     else{
-        vscode.window.showInformationMessage('Data binary created');
+        vscode.window.showInformationMessage(`Data binary created at ${outputFile}`);
     }
 
 }
