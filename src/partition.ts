@@ -14,6 +14,11 @@ interface GUIParams {
     uploadChoice: string;
 }
 
+interface PartitionData {
+    size: string;
+    offset: string;
+}
+
 async function getDataPath(): Promise<string | undefined>{
     var folders = vscode.workspace.workspaceFolders || [];
     var ini_file : any;
@@ -31,7 +36,6 @@ async function getDataPath(): Promise<string | undefined>{
     return undefined;
 }
 
-//aggiornare path con quello definitivo
 function getCSVPath(): string | undefined{
     var folders = vscode.workspace.workspaceFolders || [];
     var ini_file : any;
@@ -54,8 +58,9 @@ function getCSVPath(): string | undefined{
     return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
 }
 
-async function getPartitionDim(): Promise <string | undefined>{
+async function getPartitionData(): Promise<PartitionData | undefined>{
     let size: string | undefined = undefined;
+    let offset: string | undefined = undefined;
     var path = getCSVPath(); 
     if(path !== undefined){
         let jsonArray = await csv().fromStream(
@@ -67,10 +72,18 @@ async function getPartitionDim(): Promise <string | undefined>{
         jsonArray.forEach( (row) =>{
             if(row.Name === 'ffat' || row.Name ==='spiffs'){
                 size = row.Size;
+                offset = row.Offset; 
             }
         });
+        if(size !== undefined && offset !== undefined){
+            return{
+                size: size,
+                offset: offset
+            } as PartitionData;
+        }
     }
-    return size;
+    
+    return undefined;
 }
 
 async function getParamFromGUI(): Promise<GUIParams | undefined>{
@@ -152,9 +165,7 @@ async function getOutputPath(): Promise<string | undefined> {
     return undefined;
 }
 
-
-//da testare
-function getExecutablePath(params: GUIParams):  string | undefined {
+function getExecutablePath(params: GUIParams): string | undefined {
     const dir_path : string = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath || ".";
     var executable = path.join(dir_path, "partition");
 
@@ -193,18 +204,15 @@ function getExecutablePath(params: GUIParams):  string | undefined {
 
 }
 
-
 function getMbcToolPath(): string | undefined {
     var toolPath: string | undefined = undefined;
     if (process.platform === "win32"){
         return path.join(homedir, ".platformio", "packages", "tool-mbctool", "bin", "mbctool.exe");  
-}
+    }
     else{
         return path.join(homedir, ".platformio", "packages", "tool-mbctool", "bin", "mbctool");
     }
 }
-
-
 
 async function getUploadPort(): Promise<string | undefined>{
     try{
@@ -235,12 +243,15 @@ async function getUploadPort(): Promise<string | undefined>{
     }
 }
 
-//upload
 export async function partition(){  
-    let [params, partitionDim, outputFile] = await Promise.all([getParamFromGUI(), getPartitionDim(), getOutputPath()]);
-    if(params === undefined || partitionDim === undefined || outputFile === undefined){
+    let [params, partitionData, outputFile] = await Promise.all([getParamFromGUI(), getPartitionData(), getOutputPath()]);
+
+    if(params === undefined || partitionData === undefined || outputFile === undefined){
         return;
     }
+
+    var partitionDim = partitionData.size;
+    var partitionOffset = partitionData.offset;
 
     var executable = getExecutablePath(params);
     if(executable === undefined){
@@ -248,12 +259,31 @@ export async function partition(){
         return;
     }
 
+
     //launch command
-    console.log(`${executable} ${outputFile} ${partitionDim} ${params.dataPath}`);
-    //vscode.window.createTerminal("partition", executable, [outputFile, partitionDim, params.dataPath]);
+    console.log(`${executable} ${outputFile} ${(<string> <unknown> (<number> <unknown> partitionDim/1024))} ${params.dataPath}`);
+    var partionDimKB = <string> <unknown> (<number> <unknown> partitionDim/1024);
+    try{
+        //vscode.window.createTerminal("partition", executable, [outputFile, partionDimKB , params.dataPath]);
+
+        await new Promise((res, rej) => {
+            exec(`${executable} ${outputFile} ${partionDimKB} ${params?.dataPath}`, (err: string, stdout: string, stderr: string) => {
+                if (err) {
+                    rej(err);
+                } else {
+                    console.log(stdout);
+                    console.log(`stderr: ${stderr}`);
+                    return res() ;
+                }
+            });
+        });
+    }
+    catch{
+        vscode.window.showErrorMessage("An error has occurred during the creation of bin file");
+        return undefined;
+    }
 
     //upload
-
     if(params.uploadChoice === 'Ota'){
         var otaPath = getOtaPath();
         if(otaPath === undefined){
@@ -275,9 +305,29 @@ export async function partition(){
         if(uploadPort === undefined){
             vscode.window.showErrorMessage("Briki board not founded");
             return undefined;
-        }
-        
+        }        
         //vscode.window.createTerminal("mbctool", mbctool, ["--device", "esp", "--speed", "1500000", "--port", uploadPort, "--upload", partitionDim, outputFile]);
+
+        vscode.window.showInformationMessage("Uploading ...");
+        console.log(`${mbctool} --device esp --speed 1500000 --port ${uploadPort} --upload ${partitionOffset} ${outputFile}`);
+        try{    
+            await new Promise((res, rej) => {
+                exec(`${mbctool} --device esp --speed 1500000 --port ${uploadPort} --upload ${partitionDim} ${outputFile}`, (err: string, stdout: string, stderr: string) => {
+                    if (err) {
+                        rej(err);
+                    } else {
+                        console.log(stdout);
+                        console.log(`stderr: ${stderr}`);
+                        return res();
+                    }
+                });
+            });
+            vscode.window.showInformationMessage("Data has uploaded to the board");
+        }
+        catch{
+            vscode.window.showErrorMessage("An error as occurred during upload ");
+            return undefined;
+        }
     }
 
     else{
