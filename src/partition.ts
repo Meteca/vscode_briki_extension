@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import {getOtaPath} from './brikiOta';
+import {getOtaPath} from './PartitionLibrary/paths';
 import {getParamFromGUI} from './PartitionLibrary/paramFromGUI';
 import {getPartitionData} from './PartitionLibrary/partitionData';
 import {getExecutablePath, getMbcToolPath, getOutputPath} from './PartitionLibrary/paths';
