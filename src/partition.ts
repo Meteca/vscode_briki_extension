@@ -59,7 +59,9 @@ export async function partition(){
     let partionDimKB = <string> <unknown> (<number> <unknown> partitionDim/1024);
     try{
         await new Promise((res, rej) => {
+            console.log(`${executable} ${outputFile} ${partionDimKB} ${params?.dataPath}`);
             exec(`${executable} ${outputFile} ${partionDimKB} ${params?.dataPath}`, (err: string, stdout: string, stderr: string) => {
+                console.log(`${executable} ${outputFile} ${partionDimKB} ${params?.dataPath}`);
                 if (err) {
                     rej(err);
                 } else {
@@ -103,7 +105,9 @@ export async function partition(){
         
         try{    
             await new Promise((res, rej) => {
-                exec(`${mbctool} --device esp --speed 1500000 --port ${uploadPort} --upload ${partitionDim} ${outputFile}`, (err: string, stdout: string, stderr: string) => {
+                console.log(`${mbctool} --device esp --speed 1500000 --port ${uploadPort} --upload ${partitionOffset} ${outputFile}`);
+                exec(`${mbctool} --device esp --speed 1500000 --port ${uploadPort} --upload ${partitionOffset} ${outputFile}`, (err: string, stdout: string, stderr: string) => {
+                    console.log(`${mbctool} --device esp --speed 1500000 --port ${uploadPort} --upload ${partitionOffset} ${outputFile}`);
                     if (err) {
                         rej(err);
                     } else {
