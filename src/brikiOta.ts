@@ -2,32 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as ini from 'ini';
-
-
-export function getOtaPath(): string | undefined{
-    const dir_path : string = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath || ".";
-    let tool_path : string;
-    if(process.platform === "win32"){
-        tool_path = path.join(dir_path, "brikiOta", "brikiOta.exe");
-    }
-    else if(process.platform === "darwin"){
-        tool_path = path.join(dir_path, "brikiOta", "brikiOta.app", "Contents", "MacOS", "brikiOta");
-    }
-    else{
-        tool_path = path.join(dir_path, "brikiOta", "brikiOta");
-    }
-    try{
-        fs.chmodSync(tool_path, 0o555);
-        return tool_path;
-    }
-    catch{
-        vscode.window.showInformationMessage('Error with ota binary');
-        return undefined;
-    }
-
-}
-
-
+import {getOtaPath} from './PartitionLibrary/paths';
 
 export function brikiOta(){
     var folders = vscode.workspace.workspaceFolders || [];

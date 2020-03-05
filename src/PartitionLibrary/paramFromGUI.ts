@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import * as ini from 'ini';
 import * as fs from 'fs';
-
+import {getDataPath} from './paths';
 
 const homedir = require('os').homedir();
 
@@ -11,24 +10,6 @@ export interface GUIParams {
     fsChoice: string;
     dataPath: string; 
     uploadChoice: string;
-}
-
-
-async function getDataPath(): Promise<string | undefined>{
-    var folders = vscode.workspace.workspaceFolders || [];
-    var ini_file : any;
-    var ini_file_path : string;
-    var key: string;
-    
-    for (var i = folders.length - 1; i >= 0; i--){
-        ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
-        ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
-        key = Object.keys(ini_file)[0];
-        if (ini_file[Object.keys(ini_file)[0]].board.includes("briki") && ini_file[Object.keys(ini_file)[0]].board.includes("esp")){ // recognize if this is a briki-esp32 project
-            return ini_file[key].data_dir ??  path.join(folders[i].uri.fsPath, "data"); //return user selected data folder if exist or default one            
-        }
-    }
-    return undefined;
 }
 
 
