@@ -20,9 +20,7 @@ export async function getParamFromGUI(): Promise<GUIParams | undefined>{
     const uploadOptions = ['Usb', 'Ota', 'Just create'];
 
     let dataPath = await getDataPath();
-
     if(dataPath === undefined){
-        vscode.window.showInformationMessage('Unable to find briki project');
         return undefined;
     }
     

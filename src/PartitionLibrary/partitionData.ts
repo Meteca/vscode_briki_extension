@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import * as csv from 'csvtojson';
 import * as fs from 'fs';
 import {getCSVPath} from './paths';
@@ -12,7 +13,10 @@ export async function getPartitionData(): Promise<PartitionData | undefined>{
     let size: string | undefined = undefined;
     let offset: string | undefined = undefined;
     var path = getCSVPath(); 
-    if(path !== undefined){
+    if(path === undefined){
+        await vscode.window.showErrorMessage("No partition table was found");
+    }
+    else{
         let jsonArray = await csv().fromStream(
             fs.createReadStream(<fs.PathLike> getCSVPath(), {
                 encoding: 'utf8',
@@ -30,6 +34,9 @@ export async function getPartitionData(): Promise<PartitionData | undefined>{
                 size: size,
                 offset: offset
             } as PartitionData;
+        }
+        else{
+            vscode.window.showErrorMessage("No valid partition table was found");
         }
     }
     
