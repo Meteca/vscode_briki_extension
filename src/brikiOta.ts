@@ -33,7 +33,7 @@ export function brikiOta(){
         }
     }
     catch{
-        vscode.window.showInformationMessage('No briki project was automatically finded');
+        vscode.window.showErrorMessage('No briki project was automatically found');
     }
     finally{
         vscode.window.createTerminal("brikiOta", tool_path, args);

@@ -13,12 +13,17 @@ export async function getOutputPath(): Promise<string | undefined> {
     var ini_file : any;
     var ini_file_path : string;
 
-    for (var i = folders.length - 1; i >= 0; i--){
-        ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
-        ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
-        if (ini_file[Object.keys(ini_file)[0]].board.includes("briki") && ini_file[Object.keys(ini_file)[0]].board.includes("esp")){ // recognize if this is a briki-esp32 project
-            return path.join(folders[i].uri.fsPath, ".pio", "build", Object.keys(ini_file)[0].slice(4), "briki_data.bin");
+    try{
+        for (var i = folders.length - 1; i >= 0; i--){
+            ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
+            ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
+            if (ini_file[Object.keys(ini_file)[0]].board.includes("briki") && ini_file[Object.keys(ini_file)[0]].board.includes("esp")){ // recognize if this is a briki-esp32 project
+                return path.join(folders[i].uri.fsPath, ".pio", "build", Object.keys(ini_file)[0].slice(4), "briki_data.bin");
+            }
         }
+    }
+    catch{
+        vscode.window.showErrorMessage("No briki project was automatically found");
     }
     return undefined;
 }
@@ -78,19 +83,22 @@ export function getCSVPath(): string | undefined{
     var ini_file : any;
     var ini_file_path : string;
     var keys: string[];
-    
-    for (var i = folders.length - 1; i >= 0; i--){
-        ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
-        ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
-        keys = Object.keys(ini_file);
-        keys.forEach( (key) => {
-            if (key.includes('custom_table')){
-                return path.join(folders[i].uri.fsPath, ini_file[key].board_build.partition);
-            }
-            if (key.includes('custom_builtin_table')){
-                return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", ini_file[key].board_build.partition);
-            }
-        });
+    try{
+        for (var i = folders.length - 1; i >= 0; i--){
+            ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
+            ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
+            keys = Object.keys(ini_file);
+            keys.forEach( (key) => {
+                if (key.includes('custom_table')){
+                    return path.join(folders[i].uri.fsPath, ini_file[key].board_build.partition);
+                }
+                if (key.includes('custom_builtin_table')){
+                    return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", ini_file[key].board_build.partition);
+                }
+            });
+        }
+    }
+    catch{
     }
     return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
 }
@@ -102,15 +110,20 @@ export async function getDataPath(): Promise<string | undefined>{
     var ini_file_path : string;
     var key: string;
     
-    for (var i = folders.length - 1; i >= 0; i--){
-        ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
-        ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
-        key = Object.keys(ini_file)[0];
-        if (ini_file[Object.keys(ini_file)[0]].board.includes("briki") && ini_file[Object.keys(ini_file)[0]].board.includes("esp")){ // recognize if this is a briki-esp32 project
-            return ini_file[key].data_dir ??  path.join(folders[i].uri.fsPath, "data"); //return user selected data folder if exist or default one            
+    try{
+        for (var i = folders.length - 1; i >= 0; i--){
+            ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
+            ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
+            key = Object.keys(ini_file)[0];
+            if (ini_file[Object.keys(ini_file)[0]].board.includes("briki") && ini_file[Object.keys(ini_file)[0]].board.includes("esp")){ // recognize if this is a briki-esp32 project
+                return ini_file[key].data_dir ??  path.join(folders[i].uri.fsPath, "data"); //return user selected data folder if exist or default one            
+            }
         }
+        return undefined;
     }
-    return undefined;
+    catch{
+        vscode.window.showErrorMessage("Unable to find briki project");
+    }
 }
 
 
