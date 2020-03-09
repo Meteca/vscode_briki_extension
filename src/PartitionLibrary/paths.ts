@@ -83,36 +83,39 @@ export function getCSVPath(): string | undefined{
     var ini_file : any;
     var ini_file_path : string;
     var keys: string[];
-    try{
-        for (var i = folders.length - 1; i >= 0; i--){
-            ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
-            ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
-            keys = Object.keys(ini_file);
-            keys.forEach( (key) => {
-                var builtInPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", ini_file[key].board_build.partition);
-                var newFilePath = path.join(folders[i].uri.fsPath, ini_file[key].board_build.partition);
-                var defaultPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
-                console.log(builtInPath);
-                console.log(newFilePath);
-                console.log(defaultPath);
-                if(fs.existsSync(builtInPath)){
-                    console.log("dentro built in");
-                    return builtInPath;
-                }
-                else if (fs.existsSync(newFilePath)){
-                    console.log("dentro new file");
-                    return newFilePath;
-                }
-                else {
-                    console.log("fuori");
-                    return defaultPath;
-                }
-
-            });
-        }
-    }
-    catch{
-        return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
+    var CsvPath: string | undefined = undefined;
+    for (var i = folders.length - 1; i >= 0; i--){
+        ini_file_path = path.join(folders[i].uri.fsPath, "platformio.ini");
+        ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
+        console.log(ini_file);
+        keys = Object.keys(ini_file);
+        keys.forEach( (key) => {
+            var builtInPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", ini_file[key]["board_build.partitions"]);
+            var newFilePath = path.join(folders[i].uri.fsPath, ini_file[key]["board_build.partitions"]);
+            var defaultPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
+            console.log(builtInPath);
+            console.log(newFilePath);
+            console.log(defaultPath);
+            if(fs.existsSync(builtInPath)){
+                console.log("dentro built in");
+                CsvPath = builtInPath;
+            }
+            else if (fs.existsSync(newFilePath)){
+                console.log("dentro new file");
+                CsvPath = newFilePath;
+            }
+            else if (fs.existsSync(defaultPath)) {
+                console.log("dentro default");
+                CsvPath = defaultPath;
+            }
+            else{
+                console.log("fuori");
+                CsvPath = undefined;
+            }
+        });
+        console.log("prima della fine");
+        console.log(CsvPath);
+        return CsvPath;
     }
 }
 
