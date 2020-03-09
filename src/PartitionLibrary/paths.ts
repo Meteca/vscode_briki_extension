@@ -43,13 +43,13 @@ export function getExecutablePath(params: GUIParams): string | undefined {
         executable = path.join(executable, "fatfsimage.elf"); 
     }
     else if(params.fsChoice === 'Spiff' && process.platform === "darwin"){
-        executable = path.join(executable, "mkspiff"); 
+        executable = path.join(executable, "mkspiffs"); 
     }
     else if(params.fsChoice === 'Spiff' && process.platform === "win32"){
-        executable = path.join(executable, "mkspiff.exe");
+        executable = path.join(executable, "mkspiffs.exe");
     }
     else if(params.fsChoice === 'Spiff' && process.platform === "linux"){
-        executable = path.join(executable, "mkspiff.elf");
+        executable = path.join(executable, "mkspiffs.elf");
     }
     else{
         return undefined;
@@ -92,13 +92,19 @@ export function getCSVPath(): string | undefined{
                 var builtInPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", ini_file[key].board_build.partition);
                 var newFilePath = path.join(folders[i].uri.fsPath, ini_file[key].board_build.partition);
                 var defaultPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
+                console.log(builtInPath);
+                console.log(newFilePath);
+                console.log(defaultPath);
                 if(fs.existsSync(builtInPath)){
+                    console.log("dentro built in");
                     return builtInPath;
                 }
                 else if (fs.existsSync(newFilePath)){
+                    console.log("dentro new file");
                     return newFilePath;
                 }
                 else {
+                    console.log("fuori");
                     return defaultPath;
                 }
 
