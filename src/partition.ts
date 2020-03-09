@@ -86,7 +86,7 @@ export async function partition(){
             vscode.window.showErrorMessage('Ota tool was not properly finded');
             return undefined;
         }
-        vscode.window.createTerminal("brikiOta", otaPath, ["ESP32", outputFile]);
+        vscode.window.createTerminal("brikiOta", otaPath, ["SPIFFS", outputFile]);
     }
 
     else if(params.uploadChoice === 'Usb'){
