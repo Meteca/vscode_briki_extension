@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import {getOtaPath} from './PartitionLibrary/paths';
 import {getParamFromGUI} from './PartitionLibrary/paramFromGUI';
 import {getPartitionData} from './PartitionLibrary/partitionData';
-import {getExecutablePath, getMbcToolPath, getOutputPath} from './PartitionLibrary/paths';
+import {getExecutablePath, getMbcToolPath, getOutputPath, getPioPath} from './PartitionLibrary/paths';
 
 
 const { exec } = require('child_process');
@@ -11,7 +11,8 @@ const { exec } = require('child_process');
 async function getUploadPort(): Promise<string | undefined>{
     try{
         let brikiPort : string | undefined = await new Promise((res, rej) => {
-            exec('pio device list --json-output --serial', (err: string, stdout: string, stderr: string) => {
+            console.log(`${getPioPath()} device list --json-output --serial`);           
+            exec(`${getPioPath()} device list --json-output --serial`, (err: string, stdout: string, stderr: string) => {
                 if (err) {
                     rej(err);
                 } else {
