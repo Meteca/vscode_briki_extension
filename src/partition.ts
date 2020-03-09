@@ -57,12 +57,20 @@ export async function partition(){
 
 
     //launch command
-    let partionDimKB = <string> <unknown> (<number> <unknown> partitionDim/1024);
+    let command: string;
+    if(params.fsChoice === 'Ffat'){
+        let partitionDimKB = <string> <unknown> (<number> <unknown> partitionDim/1024);
+        command = `${executable} ${outputFile} ${partitionDimKB} ${params?.dataPath}`;
+    }
+    else {
+        command = `${executable} -c ${params?.dataPath} -p 256 -b 4096 -s ${partitionDim} ${outputFile}`;
+    }
+    console.log(command);
+
     try{
         await new Promise((res, rej) => {
-            console.log(`${executable} ${outputFile} ${partionDimKB} ${params?.dataPath}`);
-            exec(`${executable} ${outputFile} ${partionDimKB} ${params?.dataPath}`, (err: string, stdout: string, stderr: string) => {
-                console.log(`${executable} ${outputFile} ${partionDimKB} ${params?.dataPath}`);
+            console.log(command);
+            exec(command, (err: string, stdout: string, stderr: string) => {
                 if (err) {
                     rej(err);
                 } else {
