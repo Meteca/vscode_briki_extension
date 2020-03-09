@@ -48,10 +48,16 @@ export async function partition(){
 
     var partitionDim = partitionData.size;
     var partitionOffset = partitionData.offset;
+    var partitionType = partitionData.type;
 
     var executable = getExecutablePath(params);
     if(executable === undefined){
         vscode.window.showErrorMessage("Executable not found");
+        return;
+    }
+
+    if(partitionType.toLowerCase() !== params.fsChoice.toLowerCase()){
+        vscode.window.showErrorMessage(`You selected ${params.fsChoice} but your partition table uses ${partitionType}`);
         return;
     }
 
