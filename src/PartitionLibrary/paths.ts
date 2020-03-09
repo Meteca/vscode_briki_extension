@@ -149,3 +149,12 @@ export function getOtaPath(): string | undefined{
     }
 
 }
+
+export function getPioPath(){
+    if (process.platform === "win32"){
+        return path.join(homedir, ".platformio", "penv", "Scripts", "platformio.exe");  
+    }
+    else{
+        return path.join(homedir, ".platformio", "penv", "bin", "platformio");
+    }
+}
