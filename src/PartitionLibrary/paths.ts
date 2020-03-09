@@ -89,18 +89,25 @@ export function getCSVPath(): string | undefined{
             ini_file = ini.parse(fs.readFileSync(ini_file_path, 'utf-8'));
             keys = Object.keys(ini_file);
             keys.forEach( (key) => {
-                if (key.includes('custom_table')){
-                    return path.join(folders[i].uri.fsPath, ini_file[key].board_build.partition);
+                var builtInPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", ini_file[key].board_build.partition);
+                var newFilePath = path.join(folders[i].uri.fsPath, ini_file[key].board_build.partition);
+                var defaultPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
+                if(fs.existsSync(builtInPath)){
+                    return builtInPath;
                 }
-                if (key.includes('custom_builtin_table')){
-                    return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", ini_file[key].board_build.partition);
+                else if (fs.existsSync(newFilePath)){
+                    return newFilePath;
                 }
+                else {
+                    return defaultPath;
+                }
+
             });
         }
     }
     catch{
+        return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
     }
-    return path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "tools", "partitions", "8MB_ffat.csv");
 }
 
 
