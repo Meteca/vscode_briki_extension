@@ -15,7 +15,7 @@ export interface GUIParams {
 
 export async function getParamFromGUI(): Promise<GUIParams | undefined>{
     const pick = vscode.window.showQuickPick;
-    const fsOptions = ['Ffat', 'Spiff'];
+    const fsOptions = ['Ffat', 'Spiffs'];
     const loadOptions = ['Load default', 'Load empty', 'Cancel'];
     const uploadOptions = ['Usb', 'Ota', 'Just create'];
 

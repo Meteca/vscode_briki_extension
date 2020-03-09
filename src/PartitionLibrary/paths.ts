@@ -42,13 +42,13 @@ export function getExecutablePath(params: GUIParams): string | undefined {
     else if(params.fsChoice === 'Ffat' && process.platform === "linux"){
         executable = path.join(executable, "fatfsimage.elf"); 
     }
-    else if(params.fsChoice === 'Spiff' && process.platform === "darwin"){
+    else if(params.fsChoice === 'Spiffs' && process.platform === "darwin"){
         executable = path.join(executable, "mkspiffs"); 
     }
-    else if(params.fsChoice === 'Spiff' && process.platform === "win32"){
+    else if(params.fsChoice === 'Spiffs' && process.platform === "win32"){
         executable = path.join(executable, "mkspiffs.exe");
     }
-    else if(params.fsChoice === 'Spiff' && process.platform === "linux"){
+    else if(params.fsChoice === 'Spiffs' && process.platform === "linux"){
         executable = path.join(executable, "mkspiffs.elf");
     }
     else{
