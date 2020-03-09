@@ -15,7 +15,7 @@ export async function getPartitionData(): Promise<PartitionData | undefined>{
     let offset: string | undefined = undefined;
     let type: string | undefined = undefined;
     var path = getCSVPath();
-    console.log(path) 
+    console.log(path); 
     if(path === undefined){
         await vscode.window.showErrorMessage("No partition table was found");
     }
