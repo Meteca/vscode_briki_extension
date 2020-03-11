@@ -140,7 +140,6 @@ export async function getDataPath(): Promise<string | undefined>{
         return undefined;
     }
     catch{
-        vscode.window.showErrorMessage("Unable to find briki project");
     }
 }
 

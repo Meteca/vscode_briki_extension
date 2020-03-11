@@ -17,7 +17,7 @@ export async function getPartitionData(): Promise<PartitionData | undefined>{
     var path = getCSVPath();
     console.log(path); 
     if(path === undefined){
-        await vscode.window.showErrorMessage("No partition table was found");
+        vscode.window.showErrorMessage("No briki project has been found");
     }
     else{
         let jsonArray = await csv().fromStream(
