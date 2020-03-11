@@ -41,14 +41,14 @@ async function getUploadPort(): Promise<string | undefined>{
 
 export async function partition(){
     console.log("sono all'inizio");  
-    //let [params, partitionData, outputFile] = await Promise.all([getParamFromGUI(), getPartitionData(), getOutputPath()]);
-    let params = await getParamFromGUI();
+    let [params, partitionData, outputFile] = await Promise.all([getParamFromGUI(), getPartitionData(), getOutputPath()]);
+    /*let params = await getParamFromGUI();
     console.log(params);
-    let partitionData = await getPartitionData();
-    console.log(partitionData);
     let outputFile = await getOutputPath();
     console.log(outputFile);
-    
+    let partitionData = await getPartitionData();
+    console.log(partitionData);
+    */
     
     console.log("ho risolto le promesse");
     if(params === undefined || partitionData === undefined || outputFile === undefined){
