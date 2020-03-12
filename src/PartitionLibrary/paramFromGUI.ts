@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import {getDataPath} from './paths';
+import {getDataPath, BrikiProject} from './paths';
 
 const homedir = require('os').homedir();
 
@@ -13,13 +13,13 @@ export interface GUIParams {
 }
 
 
-export async function getParamFromGUI(): Promise<GUIParams | undefined>{
+export async function getParamFromGUI(project: BrikiProject): Promise<GUIParams | undefined>{
     const pick = vscode.window.showQuickPick;
     const fsOptions = ['Ffat', 'Spiffs'];
     const loadOptions = ['Load default', 'Load empty', 'Cancel'];
     const uploadOptions = ['Usb', 'Ota', 'Just create'];
 
-    let dataPath = await getDataPath();
+    let dataPath = await getDataPath(project);
     if(dataPath === undefined){
         return undefined;
     }
@@ -49,7 +49,11 @@ export async function getParamFromGUI(): Promise<GUIParams | undefined>{
                 dataPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "data");
                 break;
             case 'Load empty': 
-                fs.mkdirSync(dataPath);
+                var extensionPath = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath;
+                if (extensionPath === undefined){
+                    return undefined;
+                }
+                dataPath = path.join(extensionPath, "empty");
                 break;
             default:
                 vscode.window.showErrorMessage('An error has occured');

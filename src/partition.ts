@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import {getOtaPath} from './PartitionLibrary/paths';
 import {getParamFromGUI} from './PartitionLibrary/paramFromGUI';
 import {getPartitionData} from './PartitionLibrary/partitionData';
-import {getExecutablePath, getMbcToolPath, getOutputPath, getPioPath} from './PartitionLibrary/paths';
+import {getExecutablePath, getMbcToolPath, getOutputPath, getPioPath, getProject} from './PartitionLibrary/paths';
 
 
 const { exec } = require('child_process');
@@ -40,15 +40,11 @@ async function getUploadPort(): Promise<string | undefined>{
 
 
 export async function partition(){
-    console.log("sono all'inizio");  
-    let [params, partitionData, outputFile] = await Promise.all([getParamFromGUI(), getPartitionData(), getOutputPath()]);
-    /*let params = await getParamFromGUI();
-    console.log(params);
-    let outputFile = await getOutputPath();
-    console.log(outputFile);
-    let partitionData = await getPartitionData();
-    console.log(partitionData);
-    */
+    var project = getProject();
+    if (project === undefined){
+        return undefined;
+    }
+    let [params, partitionData, outputFile] = await Promise.all([getParamFromGUI(project), getPartitionData(project), getOutputPath(project)]);
     
     console.log("ho risolto le promesse");
     if(params === undefined || partitionData === undefined || outputFile === undefined){
@@ -92,7 +88,7 @@ export async function partition(){
                 } else {
                     console.log(stdout);
                     console.log(`stderr: ${stderr}`);
-                    return res() ;
+                    return res();
                 }
             });
         });
