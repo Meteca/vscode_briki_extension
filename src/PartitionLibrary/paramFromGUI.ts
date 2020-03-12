@@ -48,14 +48,10 @@ export async function getParamFromGUI(project: BrikiProject): Promise<GUIParams 
                 vscode.window.showInformationMessage('You canceled the operation');
                 return undefined;
             case 'Load default':
-                dataPath = tmp.dirSync({ mode: 0o0777, prefix: 'brikiTmpDir_' }).name;
+                dataPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "data");
                 break;
             case 'Load empty': 
-                var extensionPath = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath;
-                if (extensionPath === undefined){
-                    return undefined;
-                }
-                dataPath = path.join(extensionPath, "empty");
+                dataPath = tmp.dirSync({ mode: 0o0777, prefix: 'brikiTmpDir_' }).name;
                 break;
             default:
                 vscode.window.showErrorMessage('An error has occured');
