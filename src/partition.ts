@@ -88,7 +88,7 @@ export async function partition(){
                 } else {
                     console.log(stdout);
                     console.log(`stderr: ${stderr}`);
-                    if(stderr !== undefined && stdout !== undefined){
+                    if(stderr !== undefined && stderr !== "" && stderr !== " "){
                         return rej();
                     }
                     return res();
