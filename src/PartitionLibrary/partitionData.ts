@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as csv from 'csvtojson';
 import * as fs from 'fs';
-import {getCSVPath} from './paths';
+import {getCSVPath, BrikiProject} from './paths';
 
 export interface PartitionData {
     size: string;
@@ -10,18 +10,18 @@ export interface PartitionData {
 }
 
 
-export async function getPartitionData(): Promise<PartitionData | undefined>{
+export async function getPartitionData(project: BrikiProject): Promise<PartitionData | undefined>{
     let size: string | undefined = undefined;
     let offset: string | undefined = undefined;
     let type: string | undefined = undefined;
-    var path = getCSVPath();
+    var path = getCSVPath(project);
     console.log(path); 
     if(path === undefined){
         vscode.window.showErrorMessage("No briki project has been found");
     }
     else{
         let jsonArray = await csv().fromStream(
-            fs.createReadStream(<fs.PathLike> getCSVPath(), {
+            fs.createReadStream(<fs.PathLike> path, {
                 encoding: 'utf8',
                 start: 2,
             })
