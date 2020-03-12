@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as tmp from 'tmp';
 import {getDataPath, BrikiProject} from './paths';
+
 
 const homedir = require('os').homedir();
 
@@ -46,7 +48,7 @@ export async function getParamFromGUI(project: BrikiProject): Promise<GUIParams 
                 vscode.window.showInformationMessage('You canceled the operation');
                 return undefined;
             case 'Load default':
-                dataPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "data");
+                dataPath = tmp.dirSync({ mode: 0o0777, prefix: 'brikiTmpDir_' }).name;
                 break;
             case 'Load empty': 
                 var extensionPath = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath;
