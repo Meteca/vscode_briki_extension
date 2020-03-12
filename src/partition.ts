@@ -88,6 +88,9 @@ export async function partition(){
                 } else {
                     console.log(stdout);
                     console.log(`stderr: ${stderr}`);
+                    if(stderr !== undefined && stdout !== undefined){
+                        return rej();
+                    }
                     return res();
                 }
             });
