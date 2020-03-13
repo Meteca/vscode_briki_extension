@@ -61,6 +61,10 @@
 			}
 		]
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Meteca/vscode_briki_extension.git"
+	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
