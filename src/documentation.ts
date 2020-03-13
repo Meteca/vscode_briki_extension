@@ -18,12 +18,12 @@ export async function documentation(context: vscode.ExtensionContext){
 
     try{
         if(!fs.existsSync(indexPath)){
-            vscode.window.showErrorMessage('Error with documentation');
+            vscode.window.showErrorMessage('Documentation not found');
             return undefined;
         }
     }
     catch{
-        vscode.window.showErrorMessage('Error with documentation');
+        vscode.window.showErrorMessage('Documentation not found');
         return undefined;
     }
     

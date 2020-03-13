@@ -106,7 +106,7 @@ export async function partition(){
     if(params.uploadChoice === 'Ota'){
         var otaPath = getOtaPath();
         if(otaPath === undefined){
-            vscode.window.showErrorMessage('Ota tool was not properly finded');
+            vscode.window.showErrorMessage('Ota tool not found');
             return undefined;
         }
         vscode.window.createTerminal("brikiOta", otaPath, ["SPIFFS", outputFile]);

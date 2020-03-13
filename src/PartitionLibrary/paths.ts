@@ -220,12 +220,12 @@ export function getOtaPath(): string | undefined{
         return tool_path;
     }
         else {
-            vscode.window.showInformationMessage('Error with ota binary');
+            vscode.window.showErrorMessage('Ota tool not found');
             return undefined;
         }
     }
     catch{
-        vscode.window.showInformationMessage('Error with ota binary');
+        vscode.window.showErrorMessage('Ota tool not found');
         return undefined;
     }
 
