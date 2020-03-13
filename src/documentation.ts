@@ -8,15 +8,19 @@ const { exec } = require('child_process');
 
 
 export async function documentation(context: vscode.ExtensionContext){
+    /*
     const dir_path : string = vscode.extensions.getExtension("meteca.briki-extension")?.extensionPath || ".";
     const indexPath = path.join(dir_path, "documentation", "index.html");
+    */
+
+    const indexPath = path.join(homedir, ".platformio", "packages", "framework-arduino-mbcwb", "documentation", "platform", "index.html");
 
 
     try{
         fs.chmodSync(indexPath, 0o555);
     }
     catch{
-        vscode.window.showInformationMessage('Error with permission of files');
+        vscode.window.showInformationMessage('Error with documentation');
         return;
     }
     
