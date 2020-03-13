@@ -102,11 +102,17 @@ export function getExecutablePath(params: GUIParams): string | undefined {
     }
 
     try{
-        fs.chmodSync(executable, 0o555);
+        if(fs.existsSync(executable)){
         return executable;
+    }
+        else {
+            vscode.window.showErrorMessage('Error with partition binary');
+            return undefined
+        }
     }
     catch{
         vscode.window.showErrorMessage('Error with partition binary');
+        console.log("catch exacutable");
         return undefined;
     }
     
@@ -210,8 +216,13 @@ export function getOtaPath(): string | undefined{
         tool_path = path.join(dir_path, "brikiOta", "brikiOta");
     }
     try{
-        fs.chmodSync(tool_path, 0o555);
+        if(fs.existsSync(tool_path)){
         return tool_path;
+    }
+        else {
+            vscode.window.showInformationMessage('Error with ota binary');
+            return undefined;
+        }
     }
     catch{
         vscode.window.showInformationMessage('Error with ota binary');

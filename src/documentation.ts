@@ -17,11 +17,14 @@ export async function documentation(context: vscode.ExtensionContext){
 
 
     try{
-        fs.chmodSync(indexPath, 0o555);
+        if(!fs.existsSync(indexPath)){
+            vscode.window.showErrorMessage('Error with documentation');
+            return undefined;
+        }
     }
     catch{
-        vscode.window.showInformationMessage('Error with documentation');
-        return;
+        vscode.window.showErrorMessage('Error with documentation');
+        return undefined;
     }
     
 
