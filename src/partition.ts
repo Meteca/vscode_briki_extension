@@ -115,13 +115,13 @@ export async function partition(){
     else if(params.uploadChoice === 'Usb'){
         var mbctool = getMbcToolPath();
         if(mbctool === undefined){
-            vscode.window.showErrorMessage("Mbctool not founded");
+            vscode.window.showErrorMessage("Mbctool not found");
             return undefined;
         }
 
         var uploadPort = await getUploadPort();
         if(uploadPort === undefined){
-            vscode.window.showErrorMessage("Briki board not founded");
+            vscode.window.showErrorMessage("Briki board not found");
             return undefined;
         }        
 
@@ -144,10 +144,10 @@ export async function partition(){
                     }
                 });
             });
-            vscode.window.showInformationMessage("Data has uploaded to the board");
+            vscode.window.showInformationMessage("Data has been uploaded to the board");
         }
         catch{
-            vscode.window.showErrorMessage("An error as occurred during upload ");
+            vscode.window.showErrorMessage("An error as occurred during the upload");
             return undefined;
         }
     }
