@@ -42,15 +42,15 @@
 		"commands": [
 			{
 				"command": "briki.brikiOta",
-				"title": "Briki OTA"
+				"title": "Briki: MBC-WB OTA"
 			},
 			{
 				"command": "briki.partition",
-				"title": "Partition"
+				"title": "Briki: MBC-WB Partition"
 			},
 			{
 				"command": "briki.documentation",
-				"title": "Documentation"
+				"title": "Briki: MBC-WB Documentation"
 			}
 		],
 		"themes": [

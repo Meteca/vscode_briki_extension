@@ -16,9 +16,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.registerTreeDataProvider(
 			'commands',
 			new TreeProvider([
-				new Cmd('Briki OTA', 'briki.brikiOta'),
-				new Cmd('Partition', 'briki.partition'),
-				new Cmd('Documentation', 'briki.documentation')
+				new Cmd('Briki: MBC-WB OTA', 'briki.brikiOta'),
+				new Cmd('Briki: MBC-WB Partition', 'briki.partition'),
+				new Cmd('Briki: MBC-WB Documentation', 'briki.documentation')
 			])
 		)
 	);
@@ -26,9 +26,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.registerTreeDataProvider(
 			'briki-commands',
 			new TreeProvider([
-				new Cmd('Briki OTA', 'briki.brikiOta'),
-				new Cmd('Partition', 'briki.partition'),
-				new Cmd('Documentation', 'briki.documentation')
+				new Cmd('Briki: MBC-WB OTA', 'briki.brikiOta'),
+				new Cmd('Briki: MBC-WB Partition', 'briki.partition'),
+				new Cmd('Briki: MBC-WB Documentation', 'briki.documentation')
 			])
 		)
 	);		
