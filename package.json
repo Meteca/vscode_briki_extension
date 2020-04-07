@@ -52,13 +52,6 @@
 				"command": "briki.documentation",
 				"title": "Briki: MBC-WB Documentation"
 			}
-		],
-		"themes": [
-			{
-				"label": "briki",
-				"uiTheme": "vs-dark",
-				"path": "./themes/briki-color-theme.json"
-			}
 		]
 	},
 	"repository": {
