@@ -1,14 +1,24 @@
 {
-	"name": "briki-extension",
+	"name": "briki-mcbwb-extension",
 	"publisher": "meteca",
-	"displayName": "Briki extension",
+	"displayName": "Briki MBC-WB extension",
 	"description": "",
 	"version": "0.0.1",
+	"icon": "images/Icon_briki.png",
+	"license": "CC-BY-NC-SA-4.0",
 	"engines": {
 		"vscode": "^1.41.0"
 	},
 	"categories": [
+		"Extension Packs",
 		"Other"
+	],
+	"keywords": [
+		"Briki",
+		"mbc",
+		"Ota",
+		"IoT",
+		"Electronics"
 	],
 	"activationEvents": [
 		"*"
@@ -46,7 +56,7 @@
 			},
 			{
 				"command": "briki.partition",
-				"title": "Briki: MBC-WB Partition"
+				"title": "Briki: MBC-WB Flash Partitioning"
 			},
 			{
 				"command": "briki.documentation",
