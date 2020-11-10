@@ -2,8 +2,8 @@
 	"name": "briki-mbcwb-extension",
 	"publisher": "meteca",
 	"displayName": "Briki MBC-WB extension",
-	"description": "",
-	"version": "0.0.1",
+	"description": "Briki MBC-WB boards extensions",
+	"version": "1.0.0",
 	"icon": "images/Icon_briki.png",
 	"license": "CC-BY-NC-SA-4.0",
 	"engines": {
