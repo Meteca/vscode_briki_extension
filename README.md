@@ -25,13 +25,13 @@ You can also install directly from the Marketplace within Visual Studio Code, se
 ## Usage
 - Briki: MBC-WB OTA tool allows the user to upload a fresh firmware to a Briki MBC-WB board through the Wi-Fi interface. It works in AP, STA or AP+STA mode and for all the MCUs of the board.
 When the tool is invoked, a GUI is showed up allowing the user to choose the platform to update (Microchip’s SAM or Espressif’s ESP32 MCU), the binary to upload, the IP address, the port and eventually the password (if present) of the target device. In AP mode the IP defaults to 192.168.240.1 and port and password fields can be left empty.
-![](https://raw.githubusercontent.com/Meteca/vscode-briki-extension/master/images/1.png)
+![](https://raw.githubusercontent.com/Meteca/vscode_briki_extension/master/images/1.jpg)
 When a PIO project for an MBC-WB board is compiled and the OTA Tool GUI is invoked (both using the Command Palette or the plug-in shortcut), the platform and the related .bin firmware fields are automatically filled on the basis of the project configurations.
-![](https://raw.githubusercontent.com/Meteca/vscode-briki-extension/master/images/2.png)
+![](https://raw.githubusercontent.com/Meteca/vscode_briki_extension/master/images/2.gif)
 
 - Briki: MBC-WB Flash Partitioning tool allows the user to define the ESP32's external flash partition strategy. Two file systems are available: the typical SPIFF and a FAT implementation.
 To modify the partition table to match the project requirements, please refers to the PIO related guide (https://docs.platformio.org/en/latest/platforms/espressif32.html#partition-tables)
-![](https://raw.githubusercontent.com/Meteca/vscode-briki-extension/master/images/2.png)
+![](https://raw.githubusercontent.com/Meteca/vscode_briki_extension/master/images/3.gif)
 
 
 # Supported Operating Systems
