@@ -76,7 +76,7 @@ export async function getOutputPath(project: BrikiProject): Promise<string | und
 
 
 export function getExecutablePath(params: GUIParams): string | undefined {
-    const dir_path : string = vscode.extensions.getExtension("meteca.briki-mbcwb-extension")?.extensionPath || ".";
+    const dir_path : string = vscode.extensions.getExtension("briki.briki-mbcwb-extension")?.extensionPath || ".";
     var executable = path.join(dir_path, "partition");
 
     if(params.fsChoice === 'Ffat' && process.platform === "darwin"){
@@ -204,7 +204,7 @@ export async function getDataPath(project: BrikiProject): Promise<string | undef
 
 
 export function getOtaPath(): string | undefined{
-    const dir_path : string = vscode.extensions.getExtension("meteca.briki-mbcwb-extension")?.extensionPath || ".";
+    const dir_path : string = vscode.extensions.getExtension("briki.briki-mbcwb-extension")?.extensionPath || ".";
     let tool_path : string;
     if(process.platform === "win32"){
         tool_path = path.join(dir_path, "brikiOta", "brikiOta.exe");
